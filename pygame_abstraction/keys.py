@@ -41,6 +41,18 @@ KEY_LEFT_BRACKET = 35
 KEY_RIGHT_BRACKET = 36
 KEY_ESCAPE = 37
 KEY_SLASH = 38
+BUTTON_X = 39
+BUTTON_A = 40
+BUTTON_B = 41
+BUTTON_Y = 42
+BUTTON_L = 43
+BUTTON_R = 44
+BUTTON_SELECT = 45
+BUTTON_START = 46
+DPAD_UP = 47
+DPAD_DOWN = 48
+DPAD_LEFT = 49
+DPAD_RIGHT = 50
 
 keyboard_keys_to_game_engine_keys = {
     KEY_A: pygame.K_a,
@@ -85,7 +97,21 @@ keyboard_keys_to_game_engine_keys = {
     KEY_LEFT_BRACKET: pygame.K_LEFTBRACKET,
     KEY_RIGHT_BRACKET: pygame.K_RIGHTBRACKET,
     KEY_ESCAPE: pygame.K_ESCAPE,
-    KEY_SLASH: pygame.K_SLASH
+    KEY_SLASH: pygame.K_SLASH,
+    BUTTON_X: 0,
+    BUTTON_A: 1,
+    BUTTON_B: 2,
+    BUTTON_Y: 3,
+    BUTTON_L: 4,
+    BUTTON_R: 5,
+    BUTTON_SELECT: 8,
+    BUTTON_START: 9,
+    DPAD_UP: 0,
+    DPAD_DOWN: 1,
+    DPAD_LEFT: 2,
+    DPAD_RIGHT: 3
 }
 
-keys = list(keyboard_keys_to_game_engine_keys.keys())
+# keys = list(keyboard_keys_to_game_engine_keys.keys())
+keys = [x for x in range(39)]
+buttons = [BUTTON_A, BUTTON_X, BUTTON_Y, BUTTON_B, BUTTON_START, BUTTON_SELECT, BUTTON_L, BUTTON_R, DPAD_UP, DPAD_DOWN, DPAD_RIGHT, DPAD_LEFT]

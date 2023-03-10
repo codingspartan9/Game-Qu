@@ -49,9 +49,6 @@ class CollisionsEngine:
         """ :returns: bool; if object1 has collided with object2's right_edge because one of the objects has moved
             (the object1 did not collide with object2 horizontally last cycle)"""
 
-        # last_time = last_time if last_time is not None else HistoryKeeper.last_time
-
-        # TODO change both to HistoryKeeper.get_last_using_time?
         prev_object1 = HistoryKeeper.get_last(object1.name)
         prev_object2 = HistoryKeeper.get_last(object2.name)
 
@@ -69,9 +66,6 @@ class CollisionsEngine:
         """ :returns: bool; if object1 has hit object2's left_edge because one of the objects has moved
             (the object1 did not collide with object2 horizontally last cycle)"""
 
-        # last_time = last_time if last_time is not None else HistoryKeeper.last_time
-
-        # TODO change both to HistoryKeeper.get_last_using_time?
         prev_object1 = HistoryKeeper.get_last(object1.name)
         prev_object2 = HistoryKeeper.get_last(object2.name)
 
@@ -87,9 +81,7 @@ class CollisionsEngine:
     def is_bottom_collision(object1, object2, is_collision=None, time=None):
         """ :returns: bool; whether object1 has collided with object2's bottom_edge
         """
-        # last_time = time if time is not None else HistoryKeeper.last_time
 
-        # TODO change both to HistoryKeeper.get_last_using_time?
         prev_object1 = HistoryKeeper.get_last(object1.name)
         prev_object2 = HistoryKeeper.get_last(object2.name)
 
@@ -109,9 +101,6 @@ class CollisionsEngine:
     def is_top_collision(object1, object2, is_collision=None, time=None):
         """:returns: bool; whether object1 has collided with object2's top_edge"""
 
-        # last_time = time if time is not None else HistoryKeeper.last_time
-
-        # TODO change both to HistoryKeeper.get_last_using_time?
         prev_object1 = HistoryKeeper.get_last(object1.name)
         prev_object2 = HistoryKeeper.get_last(object2.name)
 

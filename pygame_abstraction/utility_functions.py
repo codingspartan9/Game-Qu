@@ -1,5 +1,5 @@
 from game_qu.pygame_abstraction import variables
-from game_qu.pygame_abstraction.keys import keyboard_keys_to_game_engine_keys
+from game_qu.pygame_abstraction.keys import *
 import pygame
 import time
 
@@ -17,10 +17,12 @@ def convert_to_int(*args):
     return return_value
 
 def load_image(path_to_image):
-    """Loads the image from that path_to_image for quick rendering (should be called before the game starts running)"""
+    """ Loads the image from that path_to_image for quick rendering (should be called before the game starts running)
+        :returns: int[] {image_length, image_height}; the length and height of the image"""
 
     if images.get(path_to_image) is None:
         images[path_to_image] = pygame.image.load(path_to_image).convert_alpha()
+    return images[path_to_image].get_size()
 
 def load_text(name, font_size, background_color, text_color):
     """Loads the text for quick rendering (should be called before the game starts running)"""
@@ -54,13 +56,11 @@ def render_image(path_to_image, left_edge, top_edge, length, height):
     image = pygame.transform.scale(image, (length, height))
     variables.window.blit(image, (left_edge, top_edge))
 
-
 def render_rectangle(left_edge, top_edge, length, height, color):
     """Renders the rectangle onto the screen"""
 
     left_edge, top_edge, length, height = convert_to_int(left_edge, top_edge, length, height)
     pygame.draw.rect(variables.window, color, [left_edge, top_edge, length, height])
-
 
 def set_up_window(length, height, background_color, title):
     """Initializes all the pygame code, so the game be run and rendered"""
@@ -79,6 +79,40 @@ def key_is_pressed(keyboard_key):
     controls = pygame.key.get_pressed()
     return controls[game_engine_key]
 
+def button_is_pressed(button):
+    game_engine_button = keyboard_keys_to_game_engine_keys.get(button)
+
+    dpad_buttons = {DPAD_UP: 0, DPAD_DOWN: 0, DPAD_LEFT: 0, DPAD_RIGHT: 0}
+    return_value = None
+
+    if dpad_buttons.get(button) is not None:
+        return_value = dpad_is_pressed(button)
+
+    else:
+        return_value = variables.joystick.get_button(game_engine_button)
+
+    return return_value
+
+def dpad_is_pressed(dpad_button):
+    joystick_axis = 0
+    value_wanted = .8
+
+    if dpad_button == DPAD_UP or dpad_button == DPAD_DOWN:
+        joystick_axis = 1
+
+    if dpad_button == DPAD_LEFT or dpad_button == DPAD_UP:
+        value_wanted = -value_wanted
+
+    return_value = None
+
+    if value_wanted < 0:
+        return_value = variables.joystick.get_axis(joystick_axis) <= value_wanted
+
+    else:
+        return_value = variables.joystick.get_axis(joystick_axis) >= value_wanted
+
+    return return_value
+
 
 def mouse_was_pressed():
     """:returns: bool; whether the mouse is currently held down this game cycle"""
@@ -88,12 +122,6 @@ def mouse_was_pressed():
 
 def call_every_cycle(function):
     """Makes pygame call the 'function' given every game cycle (60fps)"""
-
-    frame_render_time = 1 / variables.RENDERS_PER_SECOND
-    frame_run_time = 1 / variables.RUN_CALLS_PER_SECOND
-
-    render_start_time = time.time()
-    run_start_time = time.time()
 
     while True:
         start_time = time.time()
@@ -107,29 +135,10 @@ def call_every_cycle(function):
         function(start_time, True, True)
         pygame.display.update()
 
-    # while True:
-    #     for event in pygame.event.get():
-    #         if event.type == pygame.QUIT:
-    #             pygame.quit()
-
-        # if time.time() - render_start_time >= frame_render_time:
-        #     render_start_time = time.time()
-        #     run_start_time = time.time()
-        #
-        #     variables.window.fill(variables.background_color)
-        #
-        #     function(render_start_time, True, True)
-        #     pygame.display.update()
-        #
-        # if time.time() - run_start_time >= frame_run_time:
-        #     run_start_time = time.time()
-        #     function(run_start_time, True, False)
-
 def run_checking_closing():
     """Runs all the pygame code that checks to make sure the game should be closed"""
 
     pass
-
 
 
 def is_mouse_collision(dimensions):

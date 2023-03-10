@@ -15,6 +15,8 @@ class Component(Dimensions):
     is_addable = True
     is_runnable = True  # Sometimes the screen has to run the player, so some components shouldn't be run
     last_frame_id_when_visible = 0
+    image_length = 1
+    image_height = 1
 
     def __init__(self, path_to_image=""):
         """Initializes the object and loads an image if the path_to_image is not empty"""
@@ -22,7 +24,7 @@ class Component(Dimensions):
         self.path_to_image = path_to_image
 
         if path_to_image != "":
-            load_image(path_to_image)
+            self.image_length, self.image_height = load_image(path_to_image)
 
         self.name = id_creator.get_unique_id()
 
@@ -48,3 +50,14 @@ class Component(Dimensions):
 
         was_visible_last_cycle = self.last_frame_id_when_visible == HistoryKeeper.last_frame_id
         return mouse_is_clicked() and is_mouse_collision(self) and was_visible_last_cycle
+
+    def get_scaled_dimensions(self, unscaled_length, unscaled_height):
+        """ :returns: float[] [scaled_length, scaled_height]; the length and height of the image that is scaled by the
+            smallest of the two, so there is no stretching"""
+
+        horizontal_scale_factor = unscaled_length / self.image_length
+        vertical_scale_factor = unscaled_height / self.image_height
+
+        smaller_scale_factor = horizontal_scale_factor if horizontal_scale_factor < vertical_scale_factor else vertical_scale_factor
+
+        return [self.image_length * smaller_scale_factor, self.image_height * smaller_scale_factor]

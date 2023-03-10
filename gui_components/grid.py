@@ -31,12 +31,14 @@ class Grid:
         self.rows, self.columns = rows, columns
         self.goes_top_to_bottom, self.goes_left_to_right = goes_top_to_bottom, goes_left_to_right
 
-    def turn_into_grid(self, items, item_max_length, item_max_height):
+    def turn_into_grid(self, items, item_max_length=None, item_max_height=None, component_stretching_is_allowed=True):
         """ Turns all the items into a grid format
 
             :parameter items: Component[]; the items that will be converted into a grid
             :parameter item_max_length: int; the max length that an item can be (None means there is no max length)
             :parameter item_max_height: int; the max height than an item can be (None means there is no max height)
+            :parameter component_stretching_is_allowed: bool; whether the component has to be scaled by a specific value
+             before it is rendered (instead of having uneven scales causing stretching)
 
             :returns: None
         """
@@ -63,7 +65,13 @@ class Grid:
             left_edge = base_left_edge + self.get_dimension_change(column_number, item_length, self.length_buffer)
             top_edge = base_top_edge + self.get_dimension_change(row_number, item_height, self.height_buffer)
 
-            items[x].number_set_dimensions(left_edge, top_edge, item_length, item_height)
+            current_item_length = item_length
+            current_item_height = item_height
+            
+            if not component_stretching_is_allowed:
+                current_item_length, current_item_height = items[x].get_scaled_dimensions(item_length, item_height)
+
+            items[x].number_set_dimensions(left_edge, top_edge, current_item_length, current_item_height)
 
     def get_grid_dimension(self, other_dimension, number_of_items):
         """ Finds the number of either rows or columns there should be depending on the value of 'other_dimension' (ceil(number_of_items / other_dimension)

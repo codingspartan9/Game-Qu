@@ -18,7 +18,7 @@ class HUD(Component):
 
     def __init__(self, number_of_points_fields, other_fields, length, height, rows=1, columns=None, high_score_is_needed=False):
         """ Initializes the object with the values provided by initializing the TextBox(s) needed.
-            Also fields is just another way of saying TextBox. The HUD uses the Grid class from gui_components/grid.py to make the grid pattern
+            Also fields is just another way of saying TextBox. The HUD uses the Grid class from game_qu.gui_components/grid.py to make the grid pattern
 
             :parameter number_of_points_fields: int; the number of fields that contain points for players (generally equal to the number of players)
             :parameter other_fields: Component[]; the other fields that should be displayed

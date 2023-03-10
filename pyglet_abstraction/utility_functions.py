@@ -11,10 +11,15 @@ text_boxes = {}
 rectangles = {}
 
 def load_image(path_to_image):
-    """Loads the image from that path_to_image for quick rendering (should be called before the game starts running)"""
+    """ Loads the image from that path_to_image for quick rendering (should be called before the game starts running)
+        :returns: int[2] {image_length, image_height}; the length and height of the image"""
 
     if images.get(path_to_image) is None:
         images[path_to_image] = [pyglet.image.load(path_to_image), False]
+
+    image = images[path_to_image][0]
+
+    return image.width, image.height
 
 def load_text(name, font_size, background_color, text_color):
     """Loads the text for quick rendering (should be called before the game starts running)"""
